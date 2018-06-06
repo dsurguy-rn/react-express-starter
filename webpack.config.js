@@ -30,7 +30,7 @@ const webpackConfig = {
       chunks: 'all'
     }
   },
-  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
+  devtool: process.env.NODE_ENV === 'production' ? undefined : 'eval-source-map',
   plugins: [
     new CleanWebpackPlugin(['public']),
     new HtmlWebpackPlugin({
@@ -45,7 +45,7 @@ const webpackConfig = {
 
 if( process.env.NODE_ENV == 'production' ){
   webpackConfig.plugins.push(new UglifyJSPlugin({
-    sourceMap: true
+    sourceMap: false
   }))
 }
 
