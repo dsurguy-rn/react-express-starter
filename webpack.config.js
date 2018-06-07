@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
+console.log(process.env.NODE_ENV)
 const webpackConfig = {
   module: {
     rules: [
@@ -17,7 +18,10 @@ const webpackConfig = {
     ]
   },
   entry: { 
-    app: './client/index.js'
+    app: [
+      "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true",
+      './client/index.js'
+    ]
   },
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   output: { 
@@ -38,8 +42,10 @@ const webpackConfig = {
       template: path.resolve(__dirname, 'client/index.html')
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': process.env.NODE_ENV
-    })
+      'NODE_ENV': process.env.NODE_ENV
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
   ]
 }
 
