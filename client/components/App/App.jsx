@@ -1,6 +1,7 @@
 import React from 'react'
+import { hot } from 'react-hot-loader'
 
-export default class App extends React.Component{
+class App extends React.Component{
   constructor(props){
     super(props);
 
@@ -18,7 +19,7 @@ export default class App extends React.Component{
 
   render(){
     return (<React.Fragment>
-      <h1>Hello World! CHANGE 689</h1>
+      <h1>Hello World! CHANGE 7</h1>
       <button onClick={this.sampleFunction}>Increment Counter</button>
       <p>
         <span>Count: {this.state.count}</span>
@@ -32,3 +33,5 @@ export default class App extends React.Component{
     })
   }
 }
+
+export default hot(module)(App)
