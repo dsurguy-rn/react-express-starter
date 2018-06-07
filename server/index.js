@@ -16,6 +16,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(express.static('public'))
+app.use(require('./routes/appRouter'));
 
 const port = process.env.APP_PORT || 3030;
 app.listen(port, ()=>console.log(`Listening at http://localhost:${port}`) )
