@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --progress --colors",
     "build:prod": "NODE_ENV=production webpack -p --progress --colors",
+    "build:docker": "npm run build:prod && docker build -t react-express-starter:TEST .",
     "dev": "NODE_ENV=development node server/index.js"
   },
   "author": "",

@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV == 'development') {
   const webpack = require('webpack')
   const webpackDevMiddleware = require('webpack-dev-middleware')
   const webpackHotMiddleware = require('webpack-hot-middleware')
@@ -20,3 +20,7 @@ app.use(require('./routes/appRouter'));
 
 const port = process.env.APP_PORT || 3030;
 app.listen(port, ()=>console.log(`Listening at http://localhost:${port}`) )
+
+process.on('SIGINT', function() {
+  process.exit();
+});
