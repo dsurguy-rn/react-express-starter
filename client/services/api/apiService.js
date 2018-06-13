@@ -67,7 +67,7 @@ class APIService{
     })
   
     //return the URL we've built, or the original endpoint
-    return fullUrl.builtUrl || endpoint
+    return fullUrl ? fullUrl.builtUrl : endpoint
   }
 
   _transformResponseBody(response) {
