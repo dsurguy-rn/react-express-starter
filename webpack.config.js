@@ -3,6 +3,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 console.log(process.env.NODE_ENV)
 const webpackConfig = {
@@ -45,7 +46,11 @@ const webpackConfig = {
       'NODE_ENV': process.env.NODE_ENV
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new CopyWebpackPlugin([{
+      from: 'assets/**',
+      context: 'client'
+    }])
   ]
 }
 
