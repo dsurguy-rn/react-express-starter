@@ -8,6 +8,8 @@ COPY public public
 COPY server server
 COPY shared shared
 
+ENV NODE_ENV=production
+
 RUN npm install --production
 
 EXPOSE 3030
