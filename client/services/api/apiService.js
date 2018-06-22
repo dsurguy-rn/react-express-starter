@@ -40,7 +40,7 @@ class APIService{
     }
     catch (e) {
       for( var prop in incoming ){
-        headerObject[prop] = base[prop];
+        headerObject[prop] = incoming[prop];
       }
     }
   
@@ -107,24 +107,28 @@ class APIService{
     fetchConfig = fetchConfig || {};
     fetchConfig.method = 'GET'
     fetchConfig.headers = this._mergeHeaders(getHeaders, fetchConfig.headers)
+    fetchConfig.credentials = 'same-origin'
     return this._apiCall(request, fetchConfig)
   }
   post (request, fetchConfig){
     fetchConfig = fetchConfig || {};
     fetchConfig.method = 'POST'
     fetchConfig.headers = this._mergeHeaders(updateHeaders, fetchConfig.headers)
+    fetchConfig.credentials = 'same-origin'
     return this._apiCall(request, fetchConfig)
   }
   put (request, fetchConfig){
     fetchConfig = fetchConfig || {};
     fetchConfig.method = 'PUT'
     fetchConfig.headers = this._mergeHeaders(updateHeaders, fetchConfig.headers)
+    fetchConfig.credentials = 'same-origin'
     return this._apiCall(request, fetchConfig)
   }
   delete (request, fetchConfig){
     fetchConfig = fetchConfig || {};
     fetchConfig.method = 'DELETE'
     fetchConfig.headers = this._mergeHeaders(updateHeaders, fetchConfig.headers)
+    fetchConfig.credentials = 'same-origin'
     return this._apiCall(request, fetchConfig)
   }
 }
