@@ -1,63 +1,56 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 const webpack = require('webpack')
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const inDevelopment = process.env.NODE_ENV !== 'production'
 
-console.log(process.env.NODE_ENV)
-const webpackConfig = {
+module.exports = {
+  entry: (inDevelopment ? ['webpack-hot-middleware/client?reload=true'] : [])
+  .concat([
+    './client/index.js'
+  ]),
   module: {
-    rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
+    rules: [{
+      test: /\.jsx?$/,
+      exclude: /(node_modules)/,
+      use: {
+        loader: 'babel-loader'
       }
-    ]
+    }, {
+      test: /.css$/,
+      use: [
+        { loader: inDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader },
+        { loader: 'fast-css-loader' }
+      ]
+    }, {
+      test: /\.(png|jpg|gif)$/,
+      use: [
+        {
+          loader: 'file-loader'
+        }
+      ]
+    }],
   },
-  entry: { 
-    app: [
-      "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true",
-      './client/index.js'
-    ]
+  output: {
+    path: path.resolve(__dirname, 'client-dist'),
+    filename: 'bundle.js'
   },
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  output: { 
-    filename: '[name].js',
-    chunkFilename: '[name].js',
-    path: path.resolve(__dirname, 'public')
-  },
-  optimization: {
-    splitChunks: {
-      chunks: 'all'
-    }
-  },
-  devtool: process.env.NODE_ENV === 'production' ? undefined : 'eval-source-map',
+  mode: inDevelopment ? 'development' : 'production',
   plugins: [
-    new CleanWebpackPlugin(['public']),
-    new HtmlWebpackPlugin({
-      title: 'React + Express Starter App',
-      template: path.resolve(__dirname, 'client/index.html')
-    }),
-    new webpack.DefinePlugin({
-      'NODE_ENV': process.env.NODE_ENV
-    }),
+    new CleanWebpackPlugin(path.resolve(__dirname, 'client-dist')),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new CopyWebpackPlugin([{
-      from: 'assets/**',
-      context: 'client'
-    }])
-  ]
-}
-
-if( process.env.NODE_ENV == 'production' ){
-  webpackConfig.plugins.push(new UglifyJSPlugin({
-    sourceMap: false
-  }))
-}
-
-module.exports = webpackConfig
+    new HtmlWebpackPlugin(),
+  ].concat(inDevelopment ? [] : [new MiniCssExtractPlugin()]),
+  resolve: {
+    //If you don't want to use preact, remove this chunk
+    alias: {
+      'react': 'preact-compat',
+      'react-dom': 'preact-compat',
+      // Not necessary unless you consume a module using `createClass`
+      'create-react-class': 'preact-compat/lib/create-react-class',
+      // Not necessary unless you consume a module requiring `react-dom-factories`
+      'react-dom-factories': 'preact-compat/lib/react-dom-factories'
+    }
+  }
+};

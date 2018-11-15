@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './components/App/App.jsx'
+import App from './App/App.jsx'
 
-ReactDOM.render(
-  <App />,
-  document.querySelector('#app')
-)
+const appElem = document.createElement('div')
+appElem.classList.add('app-container')
+document.querySelector('body').appendChild(appElem)
+
+ReactDOM.render(<App />, appElem)
