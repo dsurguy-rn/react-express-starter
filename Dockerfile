@@ -1,12 +1,11 @@
-FROM node:8-alpine
+FROM node:10-alpine
 #This assumes npm run build:prod has already run.
 
 RUN mkdir app
 WORKDIR app
 COPY package.json .
-COPY public public
 COPY server server
-COPY shared shared
+COPY client-dist client
 
 ENV NODE_ENV=production
 

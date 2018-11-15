@@ -1,26 +1,17 @@
-const express = require('express');
-const app = express();
+const express = require('express')
+const app = express()
+const apiRouter = require('./api/api.js')
+const yargs = require('yargs').argv
+const path = require('path')
 
-if (process.env.NODE_ENV == 'development') {
-  const webpack = require('webpack')
-  const webpackDevMiddleware = require('webpack-dev-middleware')
-  const webpackHotMiddleware = require('webpack-hot-middleware')
-  const config = require('../webpack.config.js')
-  const compiler = webpack(config)
+app.use(express.static(path.resolve(__dirname, '../client-dist')))
+app.use('/api', apiRouter)
 
-  app.use(webpackDevMiddleware(compiler, {
-    noInfo: true,
-    publicPath: config.output.publicPath
-  }))
-  app.use(webpackHotMiddleware(compiler))
-}
+const server = app.listen(3030, () => {
+  console.log('Server listening on: http://localhost:' + (yargs.port||3030) )
+})
 
-app.use(express.static('public'))
-app.use(require('./routes/appRouter'));
-
-const port = process.env.APP_PORT || 3030;
-app.listen(port, ()=>console.log(`Listening at http://localhost:${port}`) )
-
-process.on('SIGINT', function() {
-  process.exit();
+// Handle ^C
+process.on('SIGINT', () => {
+  process.exit(0)
 });
