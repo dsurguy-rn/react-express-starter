@@ -5,7 +5,7 @@ RUN mkdir app
 WORKDIR app
 COPY package.json .
 COPY server server
-COPY client-dist client
+COPY client-dist client-dist
 
 ENV NODE_ENV=production
 
